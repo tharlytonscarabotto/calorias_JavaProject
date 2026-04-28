@@ -1,9 +1,12 @@
 package br.com.fiap.calorias.controller;
 
+import br.com.fiap.calorias.dto.UsuarioCadastroDTO;
+import br.com.fiap.calorias.dto.UsuarioExibicaoDTO;
 import br.com.fiap.calorias.model.Usuario;
 import br.com.fiap.calorias.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,19 +20,23 @@ public class UsuarioController {
 
     @PostMapping("/usuarios")
     @ResponseStatus(HttpStatus.CREATED)
-    public Usuario salvar(@RequestBody Usuario usuario){
+    public UsuarioExibicaoDTO salvar(@RequestBody UsuarioCadastroDTO usuario){
         return usuarioService.salvarUsuario(usuario);
     }
 
     @GetMapping("/usuarios")
     @ResponseStatus(HttpStatus.OK)
-    public List<Usuario> listarTodos(){
+    public List<UsuarioExibicaoDTO> listarTodos(){
         return usuarioService.listarTodos();
     }
 
     @GetMapping("/usuarios/{id}")
-    public Usuario buscarPorId(@PathVariable Long id){
-        return usuarioService.buscarPorId(id);
+    public ResponseEntity<UsuarioExibicaoDTO> buscarPorId(@PathVariable Long id){
+        try {
+            return ResponseEntity.ok(usuarioService.buscarPorId(id));
+        } catch (Exception e){
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/usuarios/{usuarioId}")
