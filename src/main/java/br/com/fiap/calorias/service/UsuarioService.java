@@ -2,6 +2,7 @@ package br.com.fiap.calorias.service;
 
 import br.com.fiap.calorias.dto.UsuarioCadastroDTO;
 import br.com.fiap.calorias.dto.UsuarioExibicaoDTO;
+import br.com.fiap.calorias.exception.UsuarioNaoEncontradoException;
 import br.com.fiap.calorias.model.Usuario;
 import br.com.fiap.calorias.repository.UsuarioRepository;
 import org.springframework.beans.BeanUtils;
@@ -33,7 +34,7 @@ public class UsuarioService {
         if (usuarioOptional.isPresent()){
             return new UsuarioExibicaoDTO(usuarioOptional.get());
         } else{
-            throw new RuntimeException("Usuário não existe!");
+            throw new UsuarioNaoEncontradoException("Usuário não existe no banco de dados!");
         }
     }
 
@@ -62,6 +63,17 @@ public class UsuarioService {
             return usuarioRepository.save(usuario);
         } else {
             throw new RuntimeException("Usuário não encontrado!");
+        }
+    }
+
+    public UsuarioExibicaoDTO buscarPorEmail(String email){
+        Optional<Usuario> usuarioOptional =
+                usuarioRepository.findByEmail(email);
+
+        if (usuarioOptional.isPresent()){
+            return new UsuarioExibicaoDTO(usuarioOptional.get());
+        } else {
+            throw new UsuarioNaoEncontradoException("Usuário não existe no banco de dados!");
         }
     }
 }

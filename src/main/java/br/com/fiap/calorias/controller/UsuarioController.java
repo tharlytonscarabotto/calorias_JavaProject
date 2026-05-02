@@ -4,6 +4,7 @@ import br.com.fiap.calorias.dto.UsuarioCadastroDTO;
 import br.com.fiap.calorias.dto.UsuarioExibicaoDTO;
 import br.com.fiap.calorias.model.Usuario;
 import br.com.fiap.calorias.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class UsuarioController {
 
     @PostMapping("/usuarios")
     @ResponseStatus(HttpStatus.CREATED)
-    public UsuarioExibicaoDTO salvar(@RequestBody UsuarioCadastroDTO usuario){
+    public UsuarioExibicaoDTO salvar(@Valid @RequestBody UsuarioCadastroDTO usuario){
         return usuarioService.salvarUsuario(usuario);
     }
 
@@ -32,11 +33,12 @@ public class UsuarioController {
 
     @GetMapping("/usuarios/{id}")
     public ResponseEntity<UsuarioExibicaoDTO> buscarPorId(@PathVariable Long id){
-        try {
-            return ResponseEntity.ok(usuarioService.buscarPorId(id));
-        } catch (Exception e){
-            return ResponseEntity.notFound().build();
-        }
+//        try {
+//            return ResponseEntity.ok(usuarioService.buscarPorId(id));
+//        } catch (Exception e){
+//            return ResponseEntity.notFound().build();
+//        }
+        return ResponseEntity.ok(usuarioService.buscarPorId(id));
     }
 
     @DeleteMapping("/usuarios/{usuarioId}")
@@ -47,8 +49,14 @@ public class UsuarioController {
 
     @PutMapping("/usuarios")
     @ResponseStatus(HttpStatus.OK)
-    public Usuario atualizar(@RequestBody Usuario usuario){
+    public Usuario atualizar(@Valid @RequestBody Usuario usuario){
         return usuarioService.atualizar(usuario);
+    }
+
+    @RequestMapping(value = "/usuarios", params = "email")
+    @ResponseStatus(HttpStatus.OK)
+    public UsuarioExibicaoDTO buscarPorEmail(@RequestParam String email){
+        return usuarioService.buscarPorEmail(email);
     }
 
 }
