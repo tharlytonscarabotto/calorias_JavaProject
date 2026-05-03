@@ -53,10 +53,10 @@ public class UsuarioController {
         return usuarioService.atualizar(usuario);
     }
 
-    @RequestMapping(value = "/usuarios", params = "email")
-    @ResponseStatus(HttpStatus.OK)
-    public UsuarioExibicaoDTO buscarPorEmail(@RequestParam String email){
-        return usuarioService.buscarPorEmail(email);
-    }
+//    @RequestMapping(value = "/usuarios", params = "email")
+//    @ResponseStatus(HttpStatus.OK)
+//    public UsuarioExibicaoDTO buscarPorEmail(@RequestParam String email){
+//        return usuarioService.buscarPorEmail(email);
+//    }
 
 }
